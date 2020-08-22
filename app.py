@@ -64,6 +64,7 @@ def load_saved_artifacts():
         __model = pickle.load(f)
 
     print("Loading artifacts done")
+    return __model, __locations
 
 def get_location_names():
     return __locations
