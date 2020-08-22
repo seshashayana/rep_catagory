@@ -3,8 +3,8 @@ import json
 import pickle
 import numpy as np
 
-__locations = None
-__data_columns = None
+__locations = []
+__data_columns = []
 __model = None
 
 app = Flask(__name__)
