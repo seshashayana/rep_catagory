@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-import util
 import json
 import pickle
 import numpy as np
