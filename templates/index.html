@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>Repair Catagorization API</title>
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <!-- JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+ <div>
+  <!-- Image and text -->
+  <nav class="navbar navbar-dark bg-primary" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="{{ url_for('index')}}">
+    <img src="/home/sesha/Desktop/myfirstproject/repair_complexity/static/logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
+      Predict Repair Catagory
+    </a>
+  </nav>
+
+    <div class="jumbotron jumbotron-fluid">
+      <!-- Main Input For Receiving Query to our ML -->
+      <div class="container">
+        <form action="{{ url_for('predict')}}"method="post">
+          <div class="form-group">
+            <label for="%_material">Material Loss in percentage</label>
+            <input class="form-control" type="text" name="%_material" placeholder="% Material Loss" required="required" />
+          </div>
+          <div class="form-group">
+            <label for="OH_Fasteners">Number of Overhang Fasteners</label>
+            <input class="form-control" type="text" name="OH_Fasteners" placeholder="# OH Fasteners" required="required" />
+          </div>
+          <div class="form-group">
+            <label for="Spar_Fasteners">Number of Spar Fasteners</label>
+            <input class="form-control" type="text" name="Spar_Fasteners" placeholder="# Spar Fasteners" required="required" />
+          </div>
+          <label for="Interface">At Interface</label>
+          <select class="form-control" class="form-control" name="Interface">
+            <option value=1>Yes</option>
+            <option value=0>No</option>
+          </select>
+          <br>
+          <label for="Location">Rib Bay</label>
+          <select class="form-control" class="form-control" name="Location">
+            <option value="1-5">Rib 1-5</option>
+            <option value="5-7">Rib 5-7</option>
+            <option value="8-10">Rib 8-10</option>
+            <option value="10-11">Rib 10-11</option>
+            <option value="11-12">Rib 11-12</option>
+            <option value="12-14">Rib 12-14</option>
+            <option value="14-15">Rib 14-15</option>
+            <option value="15-16">Rib 15-16</option>
+            <option value="16-20">Rib 16-20</option>
+            <option value="20-27">Rib 20-27</option>
+          </select>
+          <br>
+          <button class="btn btn-primary btn-block btn-large" type="submit">Predict</button>
+          <br>
+        </form>
+      </div>
+    </div>
+
+   <br>
+   <br>
+
+
+ </div>
+
+
+</body>
+</html>
