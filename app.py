@@ -5,21 +5,24 @@ import numpy as np
 
 __locations = []
 __data_columns = []
-__model = None
+__model = {}
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/get_location', methods = ["GET"])
+
+@app.route('/get_location', methods=["GET"])
 def get_location():
     response = jsonify({
         'location': get_location_names()
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
@@ -29,12 +32,10 @@ def predict():
     interface = request.form['Interface']
     location = request.form['Location']
 
-    response = predict_repair_class(percent_loss, oh_fast, spar_fast, interface, location)
+    global __model
+    with open("model.pkl", 'rb') as f:
+        __model = pickle.load(f)
 
-    return render_template('prediction.html',
-                            prediction_text="Repair Catagory is {}".format(response))
-
-def predict_repair_class(percent_loss, oh_fast, spar_fast, interface, location):
     try:
         loc_index = __data_columns.index(location)
     except:
@@ -48,7 +49,11 @@ def predict_repair_class(percent_loss, oh_fast, spar_fast, interface, location):
     if loc_index >= 0:
         x[loc_index] = 1
 
-    return __model.predict([x])[0]
+    response = __model.predict([x])[0]
+
+    return render_template('prediction.html',
+                           prediction_text="Repair Catagory is {}".format(response))
+
 
 def load_saved_artifacts():
     print("Loading the saved artifacts")
@@ -59,18 +64,16 @@ def load_saved_artifacts():
         __data_columns = json.load(f)['data_columns']
         __locations = __data_columns[4:]
 
-    global __model
-    with open("model.pkl", 'rb') as f:
-        __model = pickle.load(f)
-
     print("Loading artifacts done")
-    return __model, __locations
+
 
 def get_location_names():
     return __locations
 
+
 def get_data_columns():
     return __data_columns
+
 
 """if __name__=="__main__":               # this code is written to test the predictions
     load_saved_artifacts()
@@ -82,8 +85,7 @@ def get_data_columns():
     print(predict_repair_class(0.6, 15, 10, 0, "20-27"))
     print(predict_repair_class(0.6, 15, 10, 0, "10-11"))"""
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     print("Starting Python Flask Server for Repir Catagory Classification")
     load_saved_artifacts()
     app.run(debug=True)
